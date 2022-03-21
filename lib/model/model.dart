@@ -7,12 +7,14 @@ class Reminder {
   String id;
   String description;
   DateTime datetime;
+  String user;
   
   Reminder(
     this.id,
     this.description,
-    this.datetime
-    );
+    this.datetime,
+    this.user
+  );
 
   factory Reminder.fromJson(String id, Map<String, dynamic> json) {
     json["id"] = id; //id property is not stored in the body of the entity

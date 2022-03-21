@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +15,7 @@ class ReminderScreen extends StatefulWidget {
 }
 
 class _ReminderScreenState extends State<ReminderScreen> {
-  Reminder _reminder = Reminder('', '', DateTime.now());
+  Reminder _reminder = Reminder('', '', DateTime.now(), '');
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -105,9 +106,10 @@ class _ReminderScreenState extends State<ReminderScreen> {
     //CREATION
     if (_reminder.id == '') {
       FirestoreService().createReminder(_reminder).then((response) {
+        final doc = response as DocumentReference<Map<String, dynamic>>;
         _showSnackBar('Reminder Created!');
         Navigator.pushReplacementNamed(context, '/reminder',
-            arguments: {'key': response.id});
+            arguments: {'key': doc.id});
       });
       //EDITION
     } else {

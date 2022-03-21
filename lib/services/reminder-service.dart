@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:remindersapp/model/model.dart';
+import 'package:remindersapp/services/auth-service.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -8,6 +9,7 @@ class FirestoreService {
   Stream<List<Reminder>> getReminders() {
     return _db
         .collection('reminders')
+        .where('user', isEqualTo: AuthService().user!.uid)
         .snapshots()
         .map((snapshot) => snapshot.docs)
         .map((docs) => docs.map((doc) => Reminder.fromJson(doc.id, doc.data())))
@@ -25,15 +27,13 @@ class FirestoreService {
 
   /// Updates a Reminder
   Future<void> updateReminder(Reminder reminder) {
-    return _db
-        .collection('reminders')
-        .doc(reminder.id)
-        .set(reminder.toJson(), SetOptions(merge: true));
+    var ref = _db.collection('reminders').doc(reminder.id);
+    return ref.set(reminder.toJson(), SetOptions(merge: true));
   }
 
   /// Creates a Reminder
-  Future<DocumentReference<Map<String, dynamic>>> createReminder(
-      Reminder reminder) {
+  Future<void> createReminder(Reminder reminder) {
+    reminder.user = AuthService().user!.uid;
     return _db.collection('reminders').add(reminder.toJson());
   }
 
