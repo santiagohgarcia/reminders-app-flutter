@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:remindersapp/routes.dart';
+import 'package:remindersapp/services/auth-service.dart';
 import 'package:remindersapp/theme.dart';
 import 'firebase_options.dart';
 
@@ -8,7 +10,6 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const App());
 }
-
 
 /// We are using a StatefulWidget such that we only create the [Future] once,
 /// no matter how many times our widget rebuild.
@@ -43,9 +44,16 @@ class _AppState extends State<App> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(
-            theme: appTheme,
-            routes: appRoutes
+          return StreamBuilder<User?>(
+            stream: AuthService().userStream,
+            builder: (context, snapshot) {
+              return MaterialApp(
+                initialRoute:
+                    !snapshot.hasData ? '/sign-in' : '/reminders',
+                routes: appRoutes,
+                theme: appTheme
+              );
+            },
           );
         }
 

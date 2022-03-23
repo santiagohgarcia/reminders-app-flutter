@@ -106,16 +106,15 @@ class _ReminderScreenState extends State<ReminderScreen> {
     //CREATION
     if (_reminder.id == '') {
       FirestoreService().createReminder(_reminder).then((response) {
-        final doc = response as DocumentReference<Map<String, dynamic>>;
         _showSnackBar('Reminder Created!');
-        Navigator.pushReplacementNamed(context, '/reminder',
-            arguments: {'key': doc.id});
+        Navigator.pushReplacementNamed(context, '/reminders');
       });
       //EDITION
     } else {
-      FirestoreService()
-          .updateReminder(_reminder)
-          .then((_) => _showSnackBar('Reminder Updated!'));
+      FirestoreService().updateReminder(_reminder).then((_) {
+        _showSnackBar('Reminder Updated!');
+        Navigator.pushReplacementNamed(context, '/reminders');
+      });
     }
   }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:remindersapp/services/auth-service.dart';
 import 'package:remindersapp/services/reminder-service.dart';
 import 'package:remindersapp/model/model.dart';
 import 'package:remindersapp/shared/error.dart';
@@ -22,9 +21,10 @@ class RemindersScreen extends StatelessWidget {
               automaticallyImplyLeading: false,
               actions: [
                 IconButton(
-                    icon: const Icon(FontAwesomeIcons.arrowRightFromBracket),
-                    tooltip: 'Log Out',
-                    onPressed: AuthService().signOut),
+                  icon: const Icon(FontAwesomeIcons.user),
+                  tooltip: 'Profile',
+                  onPressed: () => Navigator.of(context).pushNamed('/profile'),
+                ),
               ],
             ),
             body: ListView(
@@ -41,7 +41,7 @@ class RemindersScreen extends StatelessWidget {
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () {
                 Navigator.pushNamed(context, '/reminder',
-                              arguments: {'key': '' });
+                    arguments: {'key': ''});
               },
               label: const Text('New'),
               icon: const Icon(Icons.add),
