@@ -19,7 +19,7 @@ class ProfileScreenLocal extends StatelessWidget {
           Navigator.of(context).pushReplacementNamed('/sign-in');
         }),
       ],
-      avatarSize: 24,
+      avatarSize: 250,
     );
   }
 }

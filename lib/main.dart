@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:remindersapp/routes.dart';
 import 'package:remindersapp/services/auth-service.dart';
+import 'package:remindersapp/shared/error.dart';
 import 'package:remindersapp/theme.dart';
 import 'firebase_options.dart';
 
@@ -39,7 +40,7 @@ class _AppState extends State<App> {
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
-          return const Text('error', textDirection: TextDirection.ltr);
+          return ErrorScreen(snapshot.error, snapshot.stackTrace);
         }
 
         // Once complete, show your application
@@ -47,18 +48,19 @@ class _AppState extends State<App> {
           return StreamBuilder<User?>(
             stream: AuthService().userStream,
             builder: (context, snapshot) {
+              //Show app
               return MaterialApp(
-                initialRoute:
-                    !snapshot.hasData ? '/sign-in' : '/reminders',
-                routes: appRoutes,
-                theme: appTheme
-              );
+                  initialRoute: AuthService().user == null
+                      ? '/sign-in'
+                      : '/reminders',
+                  routes: appRoutes,
+                  theme: appTheme);
             },
           );
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
-        return const Text('loading', textDirection: TextDirection.ltr);
+        return const Text('loading', textDirection: TextDirection.ltr); //TODO: replace this with more nice loading indicator
       },
     );
   }
