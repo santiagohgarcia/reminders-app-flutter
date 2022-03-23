@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:remindersapp/formatters.dart';
 import 'package:remindersapp/theme.dart';
 import '../../model/model.dart';
 import '../../services/reminder-service.dart';
@@ -26,7 +27,7 @@ class RemindersCalendar extends StatelessWidget {
                   date: reminder.datetime,
                   event: reminder,
                   color: appTheme.colorScheme.secondary,
-                  title: reminder.description,
+                  title: timeFormatter.format(reminder.datetime) + " "+ reminder.description,
                   startTime: DateTime(reminder.datetime.year,
                       reminder.datetime.month, reminder.datetime.day, 0, 0),
                   endTime: DateTime(reminder.datetime.year,
