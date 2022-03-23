@@ -6,23 +6,27 @@ class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   /// Reads all Reminders
-  Stream<List<Reminder>> getReminders() {
+  Query<Reminder> getReminders() {
     return _db
         .collection('reminders')
-        .where('user', isEqualTo: AuthService().user!.uid)
-        .snapshots()
-        .map((snapshot) => snapshot.docs)
-        .map((docs) => docs.map((doc) => Reminder.fromJson(doc.id, doc.data())))
-        .map((docIterable) => docIterable.toList());
+        .withConverter<Reminder>(
+          fromFirestore: (snapshot, _) =>
+              Reminder.fromJson(snapshot.id, snapshot.data()!),
+          toFirestore: (reminder, _) => reminder.toJson(),
+        )
+        .where('user', isEqualTo: AuthService().user!.uid);
   }
 
   /// Reads a Reminder
-  Stream<Reminder> getReminder(String key) {
+  DocumentReference<Reminder> getReminder(String key) {
     return _db
         .collection('reminders')
         .doc(key)
-        .snapshots()
-        .map((doc) => Reminder.fromJson(doc.id, doc.data()!));
+        .withConverter<Reminder>(
+          fromFirestore: (snapshot, _) =>
+              Reminder.fromJson(snapshot.id, snapshot.data()!),
+          toFirestore: (reminder, _) => reminder.toJson(),
+        );
   }
 
   /// Updates a Reminder

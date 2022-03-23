@@ -23,24 +23,25 @@ class _ReminderScreenState extends State<ReminderScreen> {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
 
     //CREATION FLOW
-    if (args['key'] == '') {
+    if (args['id'] == '') {
       return _scaffold;
     }
 
     //DISPLAY-EDIT FLOW
-    return FutureBuilder<Reminder>(
+    return FutureBuilder<DocumentSnapshot<Reminder>>(
       //Using future here instead of stream because we don't want to have changes pushed from the backend while editing
-      future: FirestoreService().getReminder(args['key']).first,
-      builder: (_, remindersSnapshot) {
+      future: FirestoreService().getReminder(args['id']).get(),
+      builder: (_, reminderDoc) {
         //SUCCESS
-        if (remindersSnapshot.hasData) {
-          _reminder = _reminder.id == ''
-              ? remindersSnapshot.data! //Just assign it the first time
-              : _reminder; //Second time use the already assigned variable to keep changes
+        if (reminderDoc.hasData) {
+          //Just assign it the first time, to not override changes
+          if(_reminder.id == ''){
+            _reminder = reminderDoc.data!.data()!; 
+          }
           return _scaffold;
           //ERROR
-        } else if (remindersSnapshot.hasError) {
-          return const ErrorScreen();
+        } else if (reminderDoc.hasError) {
+          return ErrorScreen(reminderDoc.error, reminderDoc.stackTrace);
           //WAITING
         } else {
           return const ProgressIndicatorScreen();

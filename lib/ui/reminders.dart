@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterfire_ui/firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:remindersapp/services/reminder-service.dart';
 import 'package:remindersapp/model/model.dart';
@@ -10,51 +11,40 @@ class RemindersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Reminder>>(
-      stream: FirestoreService().getReminders(),
-      builder: (_, remindersSnapshot) {
-        //SUCCESS
-        if (remindersSnapshot.hasData) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Reminders App'),
-              automaticallyImplyLeading: false,
-              actions: [
-                IconButton(
-                  icon: const Icon(FontAwesomeIcons.user),
-                  tooltip: 'Profile',
-                  onPressed: () => Navigator.of(context).pushNamed('/profile'),
-                ),
-              ],
-            ),
-            body: ListView(
-              children: remindersSnapshot.data! //reminders list
-                  .map((r) => ListTile(
-                        title: Text(r.description),
-                        onTap: () => {
-                          Navigator.pushNamed(context, '/reminder',
-                              arguments: {'key': r.id})
-                        },
-                      ))
-                  .toList(),
-            ),
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.pushNamed(context, '/reminder',
-                    arguments: {'key': ''});
-              },
-              label: const Text('New'),
-              icon: const Icon(Icons.add),
-            ),
-          );
-          //ERROR
-        } else if (remindersSnapshot.hasError) {
-          return const ErrorScreen();
-          //WAITING
-        } else {
-          return const ProgressIndicatorScreen();
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Reminders App'),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(FontAwesomeIcons.user),
+            tooltip: 'Profile',
+            onPressed: () => Navigator.of(context).pushNamed('/profile'),
+          ),
+        ],
+      ),
+      body: FirestoreListView<Reminder>(
+        query: FirestoreService().getReminders(),
+        errorBuilder: (_, error, stackTrace) => ErrorScreen(error, stackTrace),
+        loadingBuilder: (_) => const ProgressIndicatorScreen(),
+        itemBuilder: (context, snapshot) {
+          Reminder reminder = snapshot.data();
+
+          return ListTile(
+              title: Text(reminder.description),
+              onTap: () =>
+                  Navigator.of(context).pushNamed('/reminder', arguments: {
+                    'id': reminder.id,
+                  }));
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushNamed(context, '/reminder', arguments: {'id': ''});
+        },
+        label: const Text('New'),
+        icon: const Icon(Icons.add),
+      ),
     );
   }
 }
