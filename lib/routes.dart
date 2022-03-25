@@ -41,7 +41,7 @@ class RemindersRoute extends VRouteElementBuilder {
             path: ':reminderId',
             widget: const ReminderScreen(),
             name: 'reminder'),
-         ProfileRoute()
+        ProfileRoute()
       ])
     ];
   }
@@ -83,17 +83,7 @@ class NotFoundRoute extends VRouteElementBuilder {
   @override
   List<VRouteElement> buildRoutes() {
     return [
-      VGuard(
-        beforeEnter: _signInRedirector,
-        stackedRoutes: [
-          VWidget(path: notFound, widget: const NotFoundScreen()),
-        ],
-      ),
+      VWidget(path: notFound, widget: const NotFoundScreen())
     ];
   }
-}
-
-Future<void> _signInRedirector(VRedirector vRedirector) async {
-  final user = await AuthService().userStream.first;
-  return user == null ? vRedirector.to(SignInRoute.signIn) : null;
 }
