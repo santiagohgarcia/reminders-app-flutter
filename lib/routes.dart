@@ -1,6 +1,6 @@
-import 'package:remindersapp/sign-in.dart';
-import 'package:remindersapp/profile.dart';
-import 'package:remindersapp/ui/reminder.dart';
+import 'package:remindersapp/ui/sign-in.dart';
+import 'package:remindersapp/ui/profile.dart';
+import 'package:remindersapp/ui/reminders/reminder.dart';
 import 'package:remindersapp/ui/reminders/reminders.dart';
 
 var appRoutes = {

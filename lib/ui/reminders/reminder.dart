@@ -1,53 +1,49 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:remindersapp/services/reminder-service.dart';
 import 'package:remindersapp/model/model.dart';
 import 'package:remindersapp/shared/error.dart';
 import 'package:remindersapp/shared/progress-indicator.dart';
 
-class ReminderScreen extends StatefulWidget {
+final reminderProvider = FutureProvider.autoDispose.family<Reminder, String>(
+    (ref, reminderId) => FirestoreService().getReminder(reminderId).first);
+
+class ReminderScreen extends ConsumerStatefulWidget {
   const ReminderScreen({Key? key}) : super(key: key);
 
   @override
-  State<ReminderScreen> createState() => _ReminderScreenState();
+  _ReminderScreenState createState() => _ReminderScreenState();
 }
 
-class _ReminderScreenState extends State<ReminderScreen> {
+class _ReminderScreenState extends ConsumerState<ReminderScreen> {
   Reminder _reminder = Reminder('', '', DateTime.now(), '');
+
   final _formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext contex) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
 
+    final _reminderId = args['id'];
+
     //CREATION FLOW
-    if (args['id'] == '') {
+    if (_reminderId == '') {
       return _scaffold;
     }
 
-    //DISPLAY-EDIT FLOW
-    return FutureBuilder<DocumentSnapshot<Reminder>>(
-      //Using future here instead of stream because we don't want to have changes pushed from the backend while editing
-      future: FirestoreService().getReminder(args['id']).get(),
-      builder: (_, reminderDoc) {
-        //SUCCESS
-        if (reminderDoc.hasData) {
-          //Just assign it the first time, to not override changes
-          if(_reminder.id == ''){
-            _reminder = reminderDoc.data!.data()!; 
-          }
+    //EDITION FLOW
+    final reminder = ref.watch(reminderProvider(_reminderId));
+
+    return reminder.when(
+        data: (reminder) {
+          _reminder = reminder;
           return _scaffold;
-          //ERROR
-        } else if (reminderDoc.hasError) {
-          return ErrorScreen(reminderDoc.error, reminderDoc.stackTrace);
-          //WAITING
-        } else {
-          return const ProgressIndicatorScreen();
-        }
-      },
-    );
+        },
+        error: (e, s) => ErrorScreen(e, s),
+        loading: () => const ProgressIndicatorScreen());
   }
 
   Scaffold get _scaffold {

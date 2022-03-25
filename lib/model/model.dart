@@ -28,4 +28,5 @@ class Reminder {
     json.remove('id'); //id property is not stored in the body of the entity
     return json;
   }
+  
 }
