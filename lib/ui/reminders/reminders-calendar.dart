@@ -39,8 +39,7 @@ class RemindersCalendar extends ConsumerWidget {
                 cellAspectRatio: constraints.maxWidth / constraints.maxHeight,
                 onEventTap: (event, date) {
                   final reminder = event.event as Reminder;
-                  Navigator.of(context)
-                      .pushNamed('/reminder', arguments: {'id': reminder.id});
+                  Navigator.of(context).pushNamed('/reminder/' + reminder.id);
                 });
           },
           error: (e, s) => ErrorScreen(e, s),

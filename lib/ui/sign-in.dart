@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
+import 'package:remindersapp/app-router.dart';
 
 class SignInScreenLocal extends StatelessWidget {
   const SignInScreenLocal({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class SignInScreenLocal extends StatelessWidget {
       ],
       actions: [
         AuthStateChangeAction<SignedIn>((context, _) {
-          Navigator.of(context).pushReplacementNamed('/reminders');
+          AppRouter.router.navigateTo(context, '/reminders');
         }),
       ],
     );

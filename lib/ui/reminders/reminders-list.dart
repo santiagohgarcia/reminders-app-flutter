@@ -20,19 +20,17 @@ class RemindersList extends ConsumerWidget {
     return reminders.when(
         data: (reminders) {
           return ListView.builder(
-              itemCount: reminders.length,
-              itemBuilder: (context, index) {
-                final reminder = reminders[index];
-                return ListTile(
-                  title: Text(reminder.description),
-                  subtitle: Text(dateFormatter.format(reminder.datetime)),
-                  onTap: () => {
-                    Navigator.of(context)
-                        .pushNamed('/reminder', arguments: {'id': reminder.id})
-                  },
-                );
-              },
-            );
+            itemCount: reminders.length,
+            itemBuilder: (context, index) {
+              final reminder = reminders[index];
+              return ListTile(
+                title: Text(reminder.description),
+                subtitle: Text(dateFormatter.format(reminder.datetime)),
+                onTap: () =>
+                    Navigator.of(context).pushNamed('/reminder/' + reminder.id),
+              );
+            },
+          );
         },
         error: (e, s) => ErrorScreen(e, s),
         loading: () => const ProgressIndicatorScreen());

@@ -12,7 +12,9 @@ final reminderProvider = FutureProvider.autoDispose.family<Reminder, String>(
     (ref, reminderId) => FirestoreService().getReminder(reminderId).first);
 
 class ReminderScreen extends ConsumerStatefulWidget {
-  const ReminderScreen({Key? key}) : super(key: key);
+  const ReminderScreen(this.reminderId, {Key? key}) : super(key: key);
+  
+  final String reminderId;
 
   @override
   _ReminderScreenState createState() => _ReminderScreenState();
@@ -24,18 +26,15 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext contex) {
-    final args = ModalRoute.of(context)!.settings.arguments as Map;
-
-    final _reminderId = args['id'];
+  Widget build(BuildContext context) {
 
     //CREATION FLOW
-    if (_reminderId == '') {
+    if (widget.reminderId == '') {
       return _scaffold;
     }
 
     //EDITION FLOW
-    final reminder = ref.watch(reminderProvider(_reminderId));
+    final reminder = ref.watch(reminderProvider(widget.reminderId));
 
     return reminder.when(
         data: (reminder) {

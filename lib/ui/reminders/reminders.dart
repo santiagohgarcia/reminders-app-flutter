@@ -36,9 +36,7 @@ class RemindersScreen extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.pushNamed(context, '/reminder', arguments: {'id': ''});
-          },
+          onPressed: () => Navigator.pushNamed(context, '/reminder/'),
           label: const Text('New'),
           icon: const Icon(Icons.add),
         ),
