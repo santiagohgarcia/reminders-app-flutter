@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:remindersapp/formatters.dart';
 import 'package:remindersapp/theme.dart';
 import '../../model/model.dart';
 import '../../services/reminder-service.dart';
 import '../../shared/error.dart';
 import '../../shared/progress-indicator.dart';
-import 'package:calendar_view/calendar_view.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 final remindersProvider =
     StreamProvider<List<Reminder>>((ref) => FirestoreService().getReminders());
@@ -17,51 +16,57 @@ class RemindersCalendar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return LayoutBuilder(builder: (_, BoxConstraints constraints) {
-      final reminders = ref.watch(remindersProvider);
+    final reminders = ref.watch(remindersProvider);
 
+    return LayoutBuilder(builder: (_, BoxConstraints constraints) {
       return reminders.when(
           data: (reminders) {
-            final calendarEvents = _mapRemindersToCalendarEvents(reminders);
-
-            final eventController = EventController<Reminder>()
-              ..addAll(calendarEvents);
-
-            return MonthView(
-                controller: eventController,
-                // headerBuilder: (datetime) => MonthPageHeader(
-                //       date: datetime,
-                //       backgroundColor: appTheme.bottomAppBarColor
-                //     ),
-                minMonth: DateTime(1990),
-                maxMonth: DateTime(2050),
-                initialMonth: DateTime.now(),
-                cellAspectRatio: constraints.maxWidth / constraints.maxHeight,
-                onEventTap: (event, date) {
-                  final reminder = event.event as Reminder;
-                  Navigator.of(context).pushNamed('/reminder/' + reminder.id);
-                });
+            return SfCalendar(
+              view: CalendarView.month,
+              dataSource: RemindersDataSource(reminders),
+              allowedViews: const [
+                CalendarView.day,
+                CalendarView.week,
+                CalendarView.workWeek,
+                CalendarView.month,
+                CalendarView.schedule
+              ],
+              showNavigationArrow: true,
+              monthViewSettings: const MonthViewSettings(
+                  appointmentDisplayMode:
+                      MonthAppointmentDisplayMode.appointment),
+            );
           },
           error: (e, s) => ErrorScreen(e, s),
           loading: () => const ProgressIndicatorScreen());
     });
   }
+}
 
-  List<CalendarEventData<Reminder>> _mapRemindersToCalendarEvents(
-      List<Reminder> reminders) {
-    return reminders
-        .map((reminder) => CalendarEventData<Reminder>(
-              date: reminder.datetime,
-              event: reminder,
-              color: appTheme.colorScheme.secondary,
-              title: timeFormatter.format(reminder.datetime) +
-                  " " +
-                  reminder.description,
-              startTime: DateTime(reminder.datetime.year,
-                  reminder.datetime.month, reminder.datetime.day, 0, 0),
-              endTime: DateTime(reminder.datetime.year, reminder.datetime.month,
-                  reminder.datetime.day, 23, 59),
-            ))
-        .toList();
+class RemindersDataSource extends CalendarDataSource<List<Reminder>> {
+  RemindersDataSource(List<Reminder> reminders) {
+    appointments = reminders;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    final DateTime dateTime = appointments![index].datetime;
+    return DateTime(dateTime.year, dateTime.month, dateTime.day, 9, 0, 0);
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    final DateTime dateTime = appointments![index].datetime;
+    return DateTime(dateTime.year, dateTime.month, dateTime.day, 11, 0, 0);
+  }
+
+  @override
+  String getSubject(int index) {
+    return appointments![index].description;
+  }
+
+  @override
+  Color getColor(int index) {
+    return appTheme.secondaryHeaderColor;
   }
 }
