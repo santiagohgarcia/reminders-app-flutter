@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
-import 'package:remindersapp/app-router.dart';
+import 'package:vrouter/vrouter.dart';
 
 class SignInScreenLocal extends StatelessWidget {
   const SignInScreenLocal({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class SignInScreenLocal extends StatelessWidget {
     return SignInScreen(
       sideBuilder: (context, _) {
         return const Center(
-          child: FlutterLogo(size: 400 ),
+          child: FlutterLogo(size: 400),
         );
       },
       headerBuilder: (context, constraints, _) {
@@ -30,9 +30,8 @@ class SignInScreenLocal extends StatelessWidget {
         ),
       ],
       actions: [
-        AuthStateChangeAction<SignedIn>((context, _) {
-          AppRouter.router.navigateTo(context, '/reminders');
-        }),
+        AuthStateChangeAction<SignedIn>(
+            (context, _) => context.vRouter.to('/reminders', isReplacement: true)),
       ],
     );
   }

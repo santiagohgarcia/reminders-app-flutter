@@ -16,7 +16,7 @@ class Reminder {
     this.user
   );
 
-  factory Reminder.fromJson(String id, Map<String, dynamic> json) {
+  factory Reminder.fromFirebase(String id, Map<String, dynamic> json) {
     json["id"] = id; //id property is not stored in the body of the entity
     json["datetime"] = ((json["datetime"] as Timestamp).toDate().toString()); //special conversion to support datetime
     return _$ReminderFromJson(json);

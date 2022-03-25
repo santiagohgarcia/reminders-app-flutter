@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vrouter/vrouter.dart';
 
 import '../../formatters.dart';
 import '../../model/model.dart';
@@ -27,7 +28,9 @@ class RemindersList extends ConsumerWidget {
                 title: Text(reminder.description),
                 subtitle: Text(dateFormatter.format(reminder.datetime)),
                 onTap: () =>
-                    Navigator.of(context).pushNamed('/reminder/' + reminder.id),
+                    context.vRouter.toNamed('reminder', pathParameters: {
+                  'reminderId': reminder.id,
+                }),
               );
             },
           );

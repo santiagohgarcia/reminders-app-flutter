@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
+import 'package:vrouter/vrouter.dart';
 
 class ProfileScreenLocal extends StatelessWidget {
   const ProfileScreenLocal({Key? key}) : super(key: key);
@@ -16,10 +17,11 @@ class ProfileScreenLocal extends StatelessWidget {
       ],
       actions: [
         SignedOutAction((context) {
-          Navigator.of(context).pushReplacementNamed('/sign-in');
+          context.vRouter.to('/sign-in', isReplacement: true);
         }),
       ],
       avatarSize: 250,
     );
   }
 }
+ 

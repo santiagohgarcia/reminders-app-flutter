@@ -16,7 +16,7 @@ class FirestoreService {
             .snapshots()
             .map((snapshot) => snapshot.docs)
             .map((docs) =>
-                docs.map((doc) => Reminder.fromJson(doc.id, doc.data())))
+                docs.map((doc) => Reminder.fromFirebase(doc.id, doc.data())))
             .map((docIterable) => docIterable.toList());
       } else {
         return Stream.fromIterable([]);
@@ -30,7 +30,7 @@ class FirestoreService {
         .collection('reminders')
         .doc(id)
         .snapshots()
-        .map((snap) => Reminder.fromJson(snap.id, snap.data()!));
+        .map((snap) => Reminder.fromFirebase(snap.id, snap.data()!));
   }
 
   /// Updates a Reminder

@@ -3,18 +3,18 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:remindersapp/routes.dart';
 import 'package:remindersapp/services/reminder-service.dart';
 import 'package:remindersapp/model/model.dart';
 import 'package:remindersapp/shared/error.dart';
 import 'package:remindersapp/shared/progress-indicator.dart';
+import 'package:vrouter/vrouter.dart';
 
 final reminderProvider = FutureProvider.autoDispose.family<Reminder, String>(
     (ref, reminderId) => FirestoreService().getReminder(reminderId).first);
 
 class ReminderScreen extends ConsumerStatefulWidget {
-  const ReminderScreen(this.reminderId, {Key? key}) : super(key: key);
-  
-  final String reminderId;
+  const ReminderScreen({Key? key}) : super(key: key);
 
   @override
   _ReminderScreenState createState() => _ReminderScreenState();
@@ -27,22 +27,24 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final reminderId = context.vRouter.pathParameters['reminderId'] ?? '';
 
     //CREATION FLOW
-    if (widget.reminderId == '') {
+    if (reminderId == '') {
       return _scaffold;
     }
 
     //EDITION FLOW
-    final reminder = ref.watch(reminderProvider(widget.reminderId));
+    final reminder = ref.watch(reminderProvider(reminderId));
 
     return reminder.when(
-        data: (reminder) {
-          _reminder = reminder;
-          return _scaffold;
-        },
-        error: (e, s) => ErrorScreen(e, s),
-        loading: () => const ProgressIndicatorScreen());
+      data: (reminder) {
+        _reminder = reminder;
+        return _scaffold;
+      },
+      error: (e, s) => ErrorScreen(e, s),
+      loading: () => const ProgressIndicatorScreen(),
+    );
   }
 
   Scaffold get _scaffold {
@@ -103,13 +105,13 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
     if (_reminder.id == '') {
       FirestoreService().createReminder(_reminder).then((response) {
         _showSnackBar('Reminder Created!');
-        Navigator.pushReplacementNamed(context, '/reminders');
+        context.vRouter.to(RemindersRoute.reminders, isReplacement: true);
       });
       //EDITION
     } else {
       FirestoreService().updateReminder(_reminder).then((_) {
         _showSnackBar('Reminder Updated!');
-        Navigator.pushReplacementNamed(context, '/reminders');
+        context.vRouter.to(RemindersRoute.reminders, isReplacement: true);
       });
     }
   }
@@ -125,7 +127,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
     //DELETION
     FirestoreService().deleteReminder(_reminder.id).then((value) {
       _showSnackBar('Reminder Deleted!');
-      Navigator.pushReplacementNamed(context, '/reminders');
+      context.vRouter.to(RemindersRoute.reminders, isReplacement: true);
     });
   }
 }

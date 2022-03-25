@@ -49,6 +49,7 @@ dependencies:
   flutter_riverpod: ^1.0.3
   fluro: ^2.0.3
   syncfusion_flutter_calendar: ^19.4.56
+  vrouter: ^1.2.0+21
 
 dev_dependencies:
   flutter_test:
