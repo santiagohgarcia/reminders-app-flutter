@@ -41,7 +41,7 @@ class FirestoreService {
 
   /// Creates a Reminder
   Future<void> createReminder(Reminder reminder) {
-    reminder.user = AuthService().user!.uid; //TODO: Replace with Trigger
+    reminder.user = AuthService().user!.uid; //TODO: Replace with Trigger?
     return _db.collection('reminders').add(reminder.toJson());
   }
 
