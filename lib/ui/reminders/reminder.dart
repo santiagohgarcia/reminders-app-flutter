@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +8,6 @@ import 'package:remindersapp/model/model.dart';
 import 'package:remindersapp/shared/error.dart';
 import 'package:remindersapp/shared/progress-indicator.dart';
 import 'package:vrouter/vrouter.dart';
-
 import '../../generated/l10n.dart';
 
 final reminderProvider = FutureProvider.autoDispose.family<Reminder, String>(
