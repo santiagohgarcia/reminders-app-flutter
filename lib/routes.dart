@@ -38,7 +38,7 @@ class RemindersRoute extends VRouteElementBuilder {
     return [
       VWidget(path: reminders, widget: const RemindersScreen(), stackedRoutes: [
         VWidget(
-            path: ':reminderId',
+            path: '/reminder/:reminderId',
             widget: const ReminderScreen(),
             name: 'reminder'),
         ProfileRoute()

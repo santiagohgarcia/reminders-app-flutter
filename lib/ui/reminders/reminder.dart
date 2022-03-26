@@ -10,6 +10,8 @@ import 'package:remindersapp/shared/error.dart';
 import 'package:remindersapp/shared/progress-indicator.dart';
 import 'package:vrouter/vrouter.dart';
 
+import '../../generated/l10n.dart';
+
 final reminderProvider = FutureProvider.autoDispose.family<Reminder, String>(
     (ref, reminderId) => FirestoreService().getReminder(reminderId).first);
 
@@ -27,10 +29,10 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final reminderId = context.vRouter.pathParameters['reminderId'] ?? '';
+    final reminderId = context.vRouter.pathParameters['reminderId'] ?? '<NEW>';
 
     //CREATION FLOW
-    if (reminderId == '') {
+    if (reminderId == '<NEW>') {
       return _scaffold;
     }
 
@@ -70,7 +72,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
               _saveReminder();
             }
           },
-          label: const Text('Save'),
+          label: Text(S.of(context).save),
           icon: const Icon(Icons.save),
         ));
   }
@@ -82,18 +84,18 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
         //Description
         TextFormField(
             initialValue: _reminder.description,
-            decoration: const InputDecoration(hintText: 'Description'),
+            decoration: InputDecoration(hintText: S.of(context).description),
             validator: (v) =>
-                (v == null || v.isEmpty) ? 'Mandatory field' : null,
+                (v == null || v.isEmpty) ? S.of(context).mandatoryField : null,
             onChanged: (v) => setState(() => _reminder.description = v)),
         //Date
         DateTimePicker(
             initialValue: _reminder.datetime.toString(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2100),
-            dateLabelText: 'Date',
+            dateLabelText: S.of(context).date,
             validator: (v) =>
-                (v == null || v.isEmpty) ? 'Mandatory field' : null,
+                (v == null || v.isEmpty) ? S.of(context).mandatoryField : null,
             onChanged: (v) =>
                 setState(() => _reminder.datetime = DateTime.parse(v)))
       ]),
@@ -104,13 +106,13 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
     //CREATION
     if (_reminder.id == '') {
       FirestoreService().createReminder(_reminder).then((response) {
-        _showSnackBar('Reminder Created!');
+        _showSnackBar(S.of(context).reminderCreated);
         context.vRouter.to(RemindersRoute.reminders, isReplacement: true);
       });
       //EDITION
     } else {
       FirestoreService().updateReminder(_reminder).then((_) {
-        _showSnackBar('Reminder Updated!');
+        _showSnackBar(S.of(context).reminderUpdated);
         context.vRouter.to(RemindersRoute.reminders, isReplacement: true);
       });
     }
@@ -126,7 +128,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
   void _deleteReminder() {
     //DELETION
     FirestoreService().deleteReminder(_reminder.id).then((value) {
-      _showSnackBar('Reminder Deleted!');
+      _showSnackBar(S.of(context).reminderDeleted);
       context.vRouter.to(RemindersRoute.reminders, isReplacement: true);
     });
   }

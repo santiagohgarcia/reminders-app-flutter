@@ -49,6 +49,106 @@ class S {
   static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
+
+  /// `Reminders App`
+  String get remindersApp {
+    return Intl.message(
+      'Reminders App',
+      name: 'remindersApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New`
+  String get newItem {
+    return Intl.message(
+      'New',
+      name: 'newItem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mandatory field`
+  String get mandatoryField {
+    return Intl.message(
+      'Mandatory field',
+      name: 'mandatoryField',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reminder Created!`
+  String get reminderCreated {
+    return Intl.message(
+      'Reminder Created!',
+      name: 'reminderCreated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reminder Updated!`
+  String get reminderUpdated {
+    return Intl.message(
+      'Reminder Updated!',
+      name: 'reminderUpdated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reminder Deleted!`
+  String get reminderDeleted {
+    return Intl.message(
+      'Reminder Deleted!',
+      name: 'reminderDeleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date`
+  String get date {
+    return Intl.message(
+      'Date',
+      name: 'date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message(
+      'Description',
+      name: 'description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

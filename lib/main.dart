@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutterfire_ui/i10n.dart';
 import 'package:remindersapp/routes.dart';
 import 'package:remindersapp/theme.dart';
 import 'package:vrouter/vrouter.dart';
 import 'firebase_options.dart';
+import 'generated/l10n.dart';
 import 'routes.dart';
 
 void main() async {
@@ -32,6 +34,13 @@ class App extends ConsumerWidget {
     //Material app
     return VRouter(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
       initialUrl: '/reminders',
       routes: routes,
       theme: appTheme,

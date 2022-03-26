@@ -21,5 +21,20 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{};
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "date": MessageLookupByLibrary.simpleMessage("Date"),
+        "description": MessageLookupByLibrary.simpleMessage("Description"),
+        "mandatoryField":
+            MessageLookupByLibrary.simpleMessage("Mandatory field"),
+        "newItem": MessageLookupByLibrary.simpleMessage("New"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "reminderCreated":
+            MessageLookupByLibrary.simpleMessage("Reminder Created!"),
+        "reminderDeleted":
+            MessageLookupByLibrary.simpleMessage("Reminder Deleted!"),
+        "reminderUpdated":
+            MessageLookupByLibrary.simpleMessage("Reminder Updated!"),
+        "remindersApp": MessageLookupByLibrary.simpleMessage("Reminders App"),
+        "save": MessageLookupByLibrary.simpleMessage("Save")
+      };
 }

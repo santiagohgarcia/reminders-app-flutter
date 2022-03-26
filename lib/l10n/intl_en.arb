@@ -1,1 +1,12 @@
-{}
+{
+  "remindersApp": "Reminders App",
+  "profile": "Profile",
+  "newItem": "New",
+  "mandatoryField": "Mandatory field",
+  "reminderCreated": "Reminder Created!",
+  "reminderUpdated": "Reminder Updated!",
+  "reminderDeleted": "Reminder Deleted!",
+  "date": "Date",
+  "description": "Description",
+  "save": "Save"
+}

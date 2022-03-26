@@ -4,6 +4,8 @@ import 'package:remindersapp/ui/reminders/reminders-calendar.dart';
 import 'package:remindersapp/ui/reminders/reminders-list.dart';
 import 'package:vrouter/vrouter.dart';
 
+import '../../generated/l10n.dart';
+
 class RemindersScreen extends StatelessWidget {
   const RemindersScreen({Key? key}) : super(key: key);
 
@@ -14,7 +16,7 @@ class RemindersScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Reminders App'),
+          title: Text(S.of(context).remindersApp),
           automaticallyImplyLeading: false,
           bottom: const TabBar(
             tabs: [
@@ -25,7 +27,7 @@ class RemindersScreen extends StatelessWidget {
           actions: [
             IconButton(
               icon: const Icon(FontAwesomeIcons.user),
-              tooltip: 'Profile',
+              tooltip: S.of(context).profile,
               onPressed: () => context.vRouter.to('/profile'),
             ),
           ],
@@ -37,8 +39,10 @@ class RemindersScreen extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => context.vRouter.to('/reminder/'),
-          label: const Text('New'),
+          onPressed: () => context.vRouter.toNamed('reminder', pathParameters: {
+            'reminderId': '<NEW>',
+          }),
+          label: Text(S.of(context).newItem),
           icon: const Icon(Icons.add),
         ),
       ),
