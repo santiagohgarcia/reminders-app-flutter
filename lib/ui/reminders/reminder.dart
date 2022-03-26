@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:remindersapp/routes.dart';
-import 'package:remindersapp/services/reminder-service.dart';
+import 'package:remindersapp/services/reminder_service.dart';
 import 'package:remindersapp/model/model.dart';
 import 'package:remindersapp/shared/error.dart';
-import 'package:remindersapp/shared/progress-indicator.dart';
+import 'package:remindersapp/shared/progress_indicator.dart';
 import 'package:vrouter/vrouter.dart';
 import '../../generated/l10n.dart';
 
 final reminderProvider = FutureProvider.autoDispose.family<Reminder, String>(
-    (ref, reminderId) => FirestoreService().getReminder(reminderId).first);
+    (ref, reminderId) => ReminderService().getReminder(reminderId).first);
 
 class ReminderScreen extends ConsumerStatefulWidget {
   const ReminderScreen({Key? key}) : super(key: key);
@@ -109,13 +109,13 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
   void _saveReminder() {
     //CREATION
     if (_reminder.id == '') {
-      FirestoreService().createReminder(_reminder).then((response) {
+      ReminderService().createReminder(_reminder).then((response) {
         _showSnackBar(S.of(context).reminderCreated);
         context.vRouter.to(RemindersRoute.path, isReplacement: true);
       });
       //EDITION
     } else {
-      FirestoreService().updateReminder(_reminder).then((_) {
+      ReminderService().updateReminder(_reminder).then((_) {
         _showSnackBar(S.of(context).reminderUpdated);
         context.vRouter.to(RemindersRoute.path, isReplacement: true);
       });
@@ -124,7 +124,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
 
   void _deleteReminder() {
     //DELETION
-    FirestoreService().deleteReminder(_reminder.id).then((value) {
+    ReminderService().deleteReminder(_reminder.id).then((value) {
       _showSnackBar(S.of(context).reminderDeleted);
       context.vRouter.to(RemindersRoute.path, isReplacement: true);
     });

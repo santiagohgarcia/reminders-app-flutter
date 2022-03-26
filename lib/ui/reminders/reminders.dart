@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:remindersapp/ui/reminders/reminders-calendar.dart';
-import 'package:remindersapp/ui/reminders/reminders-grid.dart';
+import 'package:remindersapp/ui/reminders/reminders_calendar.dart';
+import 'package:remindersapp/ui/reminders/reminders_grid.dart';
 import 'package:vrouter/vrouter.dart';
 import '../../generated/l10n.dart';
 

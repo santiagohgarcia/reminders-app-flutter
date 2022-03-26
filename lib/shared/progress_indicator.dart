@@ -10,9 +10,7 @@ class ProgressIndicatorScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: const [
-            CircularProgressIndicator(
-              semanticsLabel: 'Linear progress indicator',
-            ),
+            CircularProgressIndicator(),
           ],
         ),
       ),

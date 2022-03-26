@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:remindersapp/model/model.dart';
-import 'package:remindersapp/services/auth-service.dart';
+import 'package:remindersapp/services/auth_service.dart';
 import 'package:rxdart/rxdart.dart';
 
-class FirestoreService {
+class ReminderService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   /// Reads all Reminders
