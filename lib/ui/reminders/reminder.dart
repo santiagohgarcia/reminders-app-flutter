@@ -47,6 +47,9 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
     );
   }
 
+  /* 
+   REMINDER SCAFFOLD
+  */
   Scaffold get _scaffold {
     return Scaffold(
         appBar: AppBar(
@@ -75,6 +78,9 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
         ));
   }
 
+  /* 
+  REMINDER FORM  
+  */
   Form get _form {
     return Form(
       key: _formKey,
@@ -105,15 +111,23 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
     if (_reminder.id == '') {
       FirestoreService().createReminder(_reminder).then((response) {
         _showSnackBar(S.of(context).reminderCreated);
-        context.vRouter.to(RemindersRoute.reminders, isReplacement: true);
+        context.vRouter.to(RemindersRoute.path, isReplacement: true);
       });
       //EDITION
     } else {
       FirestoreService().updateReminder(_reminder).then((_) {
         _showSnackBar(S.of(context).reminderUpdated);
-        context.vRouter.to(RemindersRoute.reminders, isReplacement: true);
+        context.vRouter.to(RemindersRoute.path, isReplacement: true);
       });
     }
+  }
+
+  void _deleteReminder() {
+    //DELETION
+    FirestoreService().deleteReminder(_reminder.id).then((value) {
+      _showSnackBar(S.of(context).reminderDeleted);
+      context.vRouter.to(RemindersRoute.path, isReplacement: true);
+    });
   }
 
   void _showSnackBar(String text) {
@@ -121,13 +135,5 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
       content: Text(text),
       duration: const Duration(seconds: 1),
     ));
-  }
-
-  void _deleteReminder() {
-    //DELETION
-    FirestoreService().deleteReminder(_reminder.id).then((value) {
-      _showSnackBar(S.of(context).reminderDeleted);
-      context.vRouter.to(RemindersRoute.reminders, isReplacement: true);
-    });
   }
 }

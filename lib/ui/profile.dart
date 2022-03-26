@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
+import 'package:remindersapp/routes.dart';
 import 'package:vrouter/vrouter.dart';
 
 class ProfileScreenLocal extends StatelessWidget {
@@ -17,7 +18,7 @@ class ProfileScreenLocal extends StatelessWidget {
       ],
       actions: [
         SignedOutAction((context) {
-          context.vRouter.to('/sign-in', isReplacement: true);
+          context.vRouter.to(SignInRoute.path, isReplacement: true);
         }),
       ],
       avatarSize: 250,

@@ -19,7 +19,7 @@ class GuardedRoutes extends VRouteElementBuilder {
       VGuard(
         beforeEnter: (vRedirector) async {
           final user = await AuthService().userStream.first;
-          return user == null ? vRedirector.to(SignInRoute.signIn) : null;
+          return user == null ? vRedirector.to(SignInRoute.path) : null;
         },
         stackedRoutes: [
           RemindersRoute(),
@@ -31,18 +31,28 @@ class GuardedRoutes extends VRouteElementBuilder {
 }
 
 class RemindersRoute extends VRouteElementBuilder {
-  static String reminders = '/reminders';
+  static String path = '/reminders';
 
   @override
   List<VRouteElement> buildRoutes() {
     return [
-      VWidget(path: reminders, widget: const RemindersScreen(), stackedRoutes: [
-        VWidget(
-            path: '/reminder/:reminderId',
-            widget: const ReminderScreen(),
-            name: 'reminder'),
-        ProfileRoute()
-      ])
+      VWidget(
+        path: path,
+        widget: const RemindersScreen(),
+        stackedRoutes: [ReminderRoute(), ProfileRoute()],
+      )
+    ];
+  }
+}
+
+class ReminderRoute extends VRouteElementBuilder {
+  static String path = '/reminder/:reminderId';
+  static String name = 'reminder';
+
+  @override
+  List<VRouteElement> buildRoutes() {
+    return [
+      VWidget(path: path, widget: const ReminderScreen(), name: name)
     ];
   }
 }
@@ -59,7 +69,7 @@ class ProfileRoute extends VRouteElementBuilder {
 }
 
 class SignInRoute extends VRouteElementBuilder {
-  static String signIn = '/sign-in';
+  static String path = '/sign-in';
 
   @override
   List<VRouteElement> buildRoutes() {
@@ -67,10 +77,10 @@ class SignInRoute extends VRouteElementBuilder {
       VGuard(
         beforeEnter: (vRedirector) async {
           final user = await AuthService().userStream.first;
-          return user != null ? vRedirector.to(RemindersRoute.reminders) : null;
+          return user != null ? vRedirector.to(RemindersRoute.path) : null;
         },
         stackedRoutes: [
-          VWidget(path: signIn, widget: const SignInScreenLocal()),
+          VWidget(path: path, widget: const SignInScreenLocal()),
         ],
       ),
     ];
@@ -78,12 +88,10 @@ class SignInRoute extends VRouteElementBuilder {
 }
 
 class NotFoundRoute extends VRouteElementBuilder {
-  static String notFound = '/not-found';
+  static String path = '/not-found';
 
   @override
   List<VRouteElement> buildRoutes() {
-    return [
-      VWidget(path: notFound, widget: const NotFoundScreen())
-    ];
+    return [VWidget(path: path, widget: const NotFoundScreen())];
   }
 }
