@@ -29,8 +29,6 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //Initialize Router
-
     //Material app
     return VRouter(
       debugShowCheckedModeBanner: false,
@@ -45,10 +43,5 @@ class App extends ConsumerWidget {
       routes: routes,
       theme: appTheme,
     );
-    // return MaterialApp(
-    //     navigatorKey: navigatorKey,
-    //     onGenerateRoute: AppRouter.router.generator,
-    //     theme: appTheme,
-    //   );
   }
 }

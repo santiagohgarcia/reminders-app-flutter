@@ -49,6 +49,9 @@ dependencies:
   fluro: ^2.0.3
   syncfusion_flutter_calendar: ^19.4.56
   vrouter: ^1.2.0+21
+  fake_cloud_firestore: ^1.2.2
+  firebase_auth_mocks: ^0.8.2
+  google_sign_in_mocks: ^0.2.1
 
 dev_dependencies:
   flutter_test:

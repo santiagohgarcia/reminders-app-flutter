@@ -17,7 +17,6 @@ class RemindersCalendar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final reminders = ref.watch(remindersProvider);
 
-    return LayoutBuilder(builder: (_, BoxConstraints constraints) {
       return reminders.when(
           data: (reminders) {
             return SfCalendar(
@@ -38,7 +37,6 @@ class RemindersCalendar extends ConsumerWidget {
           },
           error: (e, s) => ErrorScreen(e, s),
           loading: () => const ProgressIndicatorScreen());
-    });
   }
 }
 
