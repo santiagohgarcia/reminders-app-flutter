@@ -8,8 +8,8 @@ import '../../services/reminder-service.dart';
 import '../../shared/error.dart';
 import '../../shared/progress-indicator.dart';
 
-final remindersProvider =
-    StreamProvider<List<Reminder>>((ref) => FirestoreService().getReminders());
+final remindersProvider = StreamProvider.autoDispose<List<Reminder>>(
+    (ref) => FirestoreService().getReminders());
 
 class RemindersList extends ConsumerWidget {
   const RemindersList({Key? key}) : super(key: key);

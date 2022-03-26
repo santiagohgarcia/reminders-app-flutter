@@ -7,8 +7,8 @@ import '../../shared/error.dart';
 import '../../shared/progress-indicator.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-final remindersProvider =
-    StreamProvider<List<Reminder>>((ref) => FirestoreService().getReminders());
+final remindersProvider = StreamProvider.autoDispose<List<Reminder>>(
+    (ref) => FirestoreService().getReminders());
 
 class RemindersCalendar extends ConsumerWidget {
   const RemindersCalendar({Key? key}) : super(key: key);
