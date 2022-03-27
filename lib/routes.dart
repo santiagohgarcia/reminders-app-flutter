@@ -52,7 +52,12 @@ class ReminderRoute extends VRouteElementBuilder {
   @override
   List<VRouteElement> buildRoutes() {
     return [
-      VWidget(path: path, widget: const ReminderScreen(), name: name)
+      VWidget.builder(
+          path: path,
+          builder: (context, data) {
+            return ReminderScreen(data.pathParameters['reminderId']);
+          },
+          name: name)
     ];
   }
 }

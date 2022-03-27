@@ -2,6 +2,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:remindersapp/controllers/reminder_controller.dart';
 import 'package:remindersapp/routes.dart';
 import 'package:remindersapp/services/reminder_service.dart';
 import 'package:remindersapp/model/model.dart';
@@ -10,37 +11,19 @@ import 'package:remindersapp/shared/progress_indicator.dart';
 import 'package:vrouter/vrouter.dart';
 import '../../generated/l10n.dart';
 
-final reminderProvider = FutureProvider.autoDispose.family<Reminder, String>(
-    (ref, reminderId) => ReminderService().getReminder(reminderId).first);
+class ReminderScreen extends ConsumerWidget {
 
-class ReminderScreen extends ConsumerStatefulWidget {
-  const ReminderScreen({Key? key}) : super(key: key);
-
-  @override
-  _ReminderScreenState createState() => _ReminderScreenState();
-}
-
-class _ReminderScreenState extends ConsumerState<ReminderScreen> {
-  Reminder _reminder = Reminder('', '', DateTime.now(), '');
+  ReminderScreen(this.reminderId, {Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
+  final String reminderId;
 
   @override
-  Widget build(BuildContext context) {
-    final reminderId = context.vRouter.pathParameters['reminderId'] ?? '<NEW>';
-
-    //CREATION FLOW
-    if (reminderId == '<NEW>') {
-      return _scaffold;
-    }
-
-    //EDITION FLOW
-    final reminder = ref.watch(reminderProvider(reminderId));
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final reminder = ref.watch(reminderControllerProvider(reminderId == '<NEW>' ? null : reminderId));
     return reminder.when(
       data: (reminder) {
-        _reminder = reminder;
-        return _scaffold;
+        return _scaffold(reminder);
       },
       error: (e, s) => ErrorScreen(e, s),
       loading: () => const ProgressIndicatorScreen(),
@@ -50,12 +33,12 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
   /* 
    REMINDER SCAFFOLD
   */
-  Scaffold get _scaffold {
+  Scaffold _scaffold(Reminder reminder) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(_reminder.description),
+          title: Text(reminder.description),
           actions: [
-            _reminder.id != ''
+            reminder.id != ''
                 ? IconButton(
                     onPressed: _deleteReminder,
                     icon: const Icon(FontAwesomeIcons.trashCan),
@@ -65,7 +48,7 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
-          child: _form, //Reminder Form
+          child: _form(reminder), //Reminder Form
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
@@ -81,45 +64,34 @@ class _ReminderScreenState extends ConsumerState<ReminderScreen> {
   /* 
   REMINDER FORM  
   */
-  Form get _form {
+  Form _form(Reminder reminder) {
     return Form(
       key: _formKey,
       child: Column(children: [
         //Description
         TextFormField(
-            initialValue: _reminder.description,
+            initialValue: reminder.description,
             decoration: InputDecoration(hintText: S.of(context).description),
             validator: (v) =>
                 (v == null || v.isEmpty) ? S.of(context).mandatoryField : null,
-            onChanged: (v) => setState(() => _reminder.description = v)),
+            onChanged: (v) => setState(() => reminder.description = v)),
         //Date
         DateTimePicker(
-            initialValue: _reminder.datetime.toString(),
+            initialValue: reminder.datetime.toString(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2100),
             dateLabelText: S.of(context).date,
             validator: (v) =>
                 (v == null || v.isEmpty) ? S.of(context).mandatoryField : null,
             onChanged: (v) =>
-                setState(() => _reminder.datetime = DateTime.parse(v)))
+                setState(() => reminder.datetime = DateTime.parse(v)))
       ]),
     );
   }
 
   void _saveReminder() {
-    //CREATION
-    if (_reminder.id == '') {
-      ReminderService().createReminder(_reminder).then((response) {
-        _showSnackBar(S.of(context).reminderCreated);
-        context.vRouter.to(RemindersRoute.path, isReplacement: true);
-      });
-      //EDITION
-    } else {
-      ReminderService().updateReminder(_reminder).then((_) {
-        _showSnackBar(S.of(context).reminderUpdated);
-        context.vRouter.to(RemindersRoute.path, isReplacement: true);
-      });
-    }
+
+
   }
 
   void _deleteReminder() {
