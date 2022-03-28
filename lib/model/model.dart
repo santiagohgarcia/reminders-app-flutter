@@ -1,32 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'model.freezed.dart';
 part 'model.g.dart';
 
-@JsonSerializable()
-class Reminder {
-  String id;
-  String description;
-  DateTime datetime;
-  String user;
-  
-  Reminder(
-    this.id,
-    this.description,
-    this.datetime,
-    this.user
-  );
+@freezed
+abstract class Reminder with _$Reminder {
+  const Reminder._();
 
-  factory Reminder.fromFirebase(String id, Map<String, dynamic> json) {
-    json["id"] = id; //id property is not stored in the body of the entity
-    json["datetime"] = ((json["datetime"] as Timestamp).toDate().toString()); //special conversion to support datetime
+  const factory Reminder(
+      {String? id,
+      required String description,
+      required DateTime datetime,
+      required String user}) = _Reminder;
+
+  factory Reminder.empty(String user) =>
+      Reminder(description: '', datetime: DateTime.now(), user: user);
+
+  factory Reminder.fromJson(json) {
+    json["datetime"] = ((json["datetime"] as Timestamp).toDate().toString());
     return _$ReminderFromJson(json);
   }
 
-  Map<String, dynamic> toJson() {
-    var json = _$ReminderToJson(this);
+  factory Reminder.fromDocument(DocumentSnapshot doc) {
+    final data = doc.data()!;
+    return Reminder.fromJson(data).copyWith(id: doc.id);
+  }
+
+  Map<String, dynamic> toDocument() {
+    var json = toJson();
     json['datetime'] = Timestamp.fromDate(DateTime.parse(json['datetime']));
     json.remove('id'); //id property is not stored in the body of the entity
     return json;
   }
-  
 }

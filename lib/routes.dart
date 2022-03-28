@@ -1,9 +1,9 @@
+import 'package:remindersapp/features/reminders/reminders.dart';
 import 'package:remindersapp/services/auth_service.dart';
-import 'package:remindersapp/ui/not-found.dart';
-import 'package:remindersapp/ui/profile.dart';
-import 'package:remindersapp/ui/reminders/reminder.dart';
-import 'package:remindersapp/ui/reminders/reminders.dart';
-import 'package:remindersapp/ui/sign_in.dart';
+import 'package:remindersapp/features/not_found/not-found.dart';
+import 'package:remindersapp/features/profile/profile.dart';
+import 'package:remindersapp/features/reminder/reminder.dart';
+import 'package:remindersapp/features/sign_in/sign_in.dart';
 import 'package:vrouter/vrouter.dart';
 
 final routes = [
@@ -39,7 +39,7 @@ class RemindersRoute extends VRouteElementBuilder {
       VWidget(
         path: path,
         widget: const RemindersScreen(),
-        stackedRoutes: [ReminderRoute(), ProfileRoute()],
+        stackedRoutes: [ReminderRoute(), ProfileRoute(), NewReminderRoute()],
       )
     ];
   }
@@ -55,9 +55,23 @@ class ReminderRoute extends VRouteElementBuilder {
       VWidget.builder(
           path: path,
           builder: (context, data) {
-            return ReminderScreen(data.pathParameters['reminderId']);
+            return ReminderScreen(data.pathParameters['reminderId']!);
           },
           name: name)
+    ];
+  }
+}
+
+class NewReminderRoute extends VRouteElementBuilder {
+  static String path = '/newReminder';
+
+  @override
+  List<VRouteElement> buildRoutes() {
+    return [
+      VWidget(
+        path: path,
+        widget: ReminderScreen(null),
+      )
     ];
   }
 }

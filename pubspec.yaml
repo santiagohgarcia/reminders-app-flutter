@@ -53,6 +53,8 @@ dependencies:
   firebase_auth_mocks: ^0.8.2
   google_sign_in_mocks: ^0.2.1
   flutter_svg: ^1.0.3
+  freezed: ^1.1.1
+  freezed_annotation: ^1.1.0
 
 dev_dependencies:
   flutter_test:

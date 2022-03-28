@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:remindersapp/ui/reminders/reminders_calendar.dart';
-import 'package:remindersapp/ui/reminders/reminders_grid.dart';
+import 'package:remindersapp/features/reminders/reminders_calendar.dart';
+import 'package:remindersapp/features/reminders/reminders_grid.dart';
+import 'package:remindersapp/routes.dart';
 import 'package:vrouter/vrouter.dart';
 import '../../generated/l10n.dart';
 
@@ -38,9 +39,7 @@ class RemindersScreen extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => context.vRouter.toNamed('reminder', pathParameters: {
-            'reminderId': '<NEW>',
-          }),
+          onPressed: () => context.vRouter.to(NewReminderRoute.path),
           label: Text(S.of(context).newItem),
           icon: const Icon(Icons.add),
         ),

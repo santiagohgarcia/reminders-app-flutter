@@ -16,8 +16,8 @@ class ReminderService {
             .snapshots()
             .map((snapshot) => snapshot.docs)
             .map((docs) =>
-                docs.map((doc) => Reminder.fromFirebase(doc.id, doc.data())))
-            .map((docIterable) => docIterable.toList());
+                docs.map((doc) => Reminder.fromDocument(doc)))
+            .map((reminders) => reminders.toList());
       } else {
         return Stream.fromIterable([]);
       }
@@ -30,19 +30,18 @@ class ReminderService {
         .collection('reminders')
         .doc(id)
         .snapshots()
-        .map((snap) => Reminder.fromFirebase(snap.id, snap.data()!));
+        .map((snap) => Reminder.fromDocument(snap));
   }
 
   /// Updates a Reminder
   Future<void> updateReminder(Reminder reminder) {
     var ref = _db.collection('reminders').doc(reminder.id);
-    return ref.set(reminder.toJson(), SetOptions(merge: true));
+    return ref.set(reminder.toDocument(), SetOptions(merge: true));
   }
 
   /// Creates a Reminder
   Future<void> createReminder(Reminder reminder) {
-    reminder.user = AuthService().user!.uid; //TODO: Replace with Trigger?
-    return _db.collection('reminders').add(reminder.toJson());
+    return _db.collection('reminders').add(reminder.toDocument());
   }
 
   /// Creates a Reminder

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:remindersapp/features/reminders/reminders_controller.dart';
+import 'package:remindersapp/features/_shared/error.dart';
+import 'package:remindersapp/features/_shared/progress_indicator.dart';
 import 'package:vrouter/vrouter.dart';
 import '../../formatters.dart';
 import '../../model/model.dart';
-import '../../services/reminder_service.dart';
-import '../../shared/error.dart';
-import '../../shared/progress_indicator.dart';
 
-final remindersProvider = StreamProvider.autoDispose<List<Reminder>>(
-    (ref) => ReminderService().getReminders());
 
 class RemindersGrid extends ConsumerWidget {
   const RemindersGrid({Key? key}) : super(key: key);
@@ -41,7 +39,7 @@ class RemindersGrid extends ConsumerWidget {
         subtitle: Text(dateFormatter.format(reminder.datetime)),
         onTap: () => context.vRouter.toNamed(
           'reminder',
-          pathParameters: {'reminderId': reminder.id},
+          pathParameters: {'reminderId': reminder.id!},
         ),
       ),
     );

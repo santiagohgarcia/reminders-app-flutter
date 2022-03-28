@@ -6,14 +6,15 @@ part of 'model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Reminder _$ReminderFromJson(Map<String, dynamic> json) => Reminder(
-      json['id'] as String,
-      json['description'] as String,
-      DateTime.parse(json['datetime'] as String),
-      json['user'] as String,
+_$_Reminder _$$_ReminderFromJson(Map<String, dynamic> json) => _$_Reminder(
+      id: json['id'] as String?,
+      description: json['description'] as String,
+      datetime: DateTime.parse(json['datetime'] as String),
+      user: json['user'] as String,
     );
 
-Map<String, dynamic> _$ReminderToJson(Reminder instance) => <String, dynamic>{
+Map<String, dynamic> _$$_ReminderToJson(_$_Reminder instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'description': instance.description,
       'datetime': instance.datetime.toIso8601String(),
