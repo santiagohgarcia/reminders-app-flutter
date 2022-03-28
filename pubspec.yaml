@@ -46,7 +46,6 @@ dependencies:
   flutterfire_ui: ^0.3.6+1
   calendar_view: ^0.0.4
   flutter_riverpod: ^1.0.3
-  fluro: ^2.0.3
   syncfusion_flutter_calendar: ^19.4.56
   vrouter: ^1.2.0+21
   fake_cloud_firestore: ^1.2.2
@@ -55,6 +54,7 @@ dependencies:
   flutter_svg: ^1.0.3
   freezed: ^1.1.1
   freezed_annotation: ^1.1.0
+  adobe_xd: ^2.0.1
 
 dev_dependencies:
   flutter_test:

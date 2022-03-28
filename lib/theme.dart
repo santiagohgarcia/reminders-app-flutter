@@ -25,7 +25,7 @@ var appTheme = ThemeData(
     primaryColorLight: Color(0xffE1E2E1),
     primaryColorDark: Color(0xffE1E2E1),
     canvasColor: Color(0xffE1E2E1),
-    accentColor: Color(0xff3949ab),
+    accentColor: Color(0xffE1E2E1),
     accentColorBrightness: Brightness.light,
     scaffoldBackgroundColor: Color(0xffB5BFD3),
     bottomAppBarColor: Color(0xff6D42CE),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:remindersapp/features/reminders/lower_bar.dart';
 import 'package:remindersapp/features/reminders/reminders_calendar.dart';
 import 'package:remindersapp/features/reminders/reminders_grid.dart';
 import 'package:remindersapp/routes.dart';
@@ -21,7 +22,7 @@ class RemindersScreen extends StatelessWidget {
           bottom: const TabBar(
             tabs: [
               Tab(icon: Icon(FontAwesomeIcons.list)),
-              Tab(icon: Icon(FontAwesomeIcons.calendar)),
+              Tab(icon: Icon(FontAwesomeIcons.calendar))
             ],
           ),
           actions: [
@@ -32,12 +33,15 @@ class RemindersScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: const TabBarView(
-          children: [
-            RemindersGrid(),
-            RemindersCalendar(),
-          ],
-        ),
+        body: Stack(children: [
+          lowerBar,
+          TabBarView(
+            children: [
+              RemindersGrid(),
+              RemindersCalendar(),
+            ],
+          )
+        ]),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => context.vRouter.to(NewReminderRoute.path),
           label: Text(S.of(context).newItem),
