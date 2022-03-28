@@ -12,8 +12,8 @@ import '../../generated/l10n.dart';
 class ReminderScreen extends ConsumerWidget {
   ReminderScreen(this._reminderId, {Key? key}) : super(key: key);
 
-  get isCreation => _reminderId == '<NEW>';
-  get isUpdate => !isCreation;
+  get isCreation => _reminderId == null;
+  get isUpdate => _reminderId != null;
 
   final String? _reminderId;
 
@@ -22,7 +22,6 @@ class ReminderScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final reminderProvider = reminderNotifierProvider(_reminderId);
-    //We create the reminder state, that will default to an empty provider
     final _reminder = ref.watch(reminderProvider);
     return _reminder.when(
       data: (reminder) => Scaffold(
@@ -34,7 +33,7 @@ class ReminderScreen extends ConsumerWidget {
                       onPressed: () async {
                         await ref.read(reminderProvider.notifier).delete();
                         context.vRouter.to(RemindersRoute.path);
-                        _showSnackBar(context, S.of(context).reminderUpdated);
+                        _showSnackBar(context, S.of(context).reminderDeleted);
                       },
                       icon: const Icon(FontAwesomeIcons.trashCan),
                     )
