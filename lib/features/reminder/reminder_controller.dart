@@ -15,7 +15,7 @@ final reminderNotifierProvider = StateNotifierProvider.autoDispose
   } else {
     //If the reminder ID is null, get state it from a new reminder
     final user = ref.watch(userProvider);
-    return ReminderController.fromEmpty(user.value!.uid);
+    return ReminderController.fromEmptyReminder(user.value!.uid);
   }
 });
 
@@ -25,7 +25,7 @@ final reminderNotifierProvider = StateNotifierProvider.autoDispose
 class ReminderController extends StateNotifier<AsyncValue<Reminder>> {
   ReminderController(AsyncValue<Reminder> reminderAsync) : super(reminderAsync);
 
-  static ReminderController fromEmpty(String userId) {
+  static ReminderController fromEmptyReminder(String userId) {
     return ReminderController(AsyncData(Reminder.empty(userId)));
   }
 
