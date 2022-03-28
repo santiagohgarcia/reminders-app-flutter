@@ -21,7 +21,7 @@ class ReminderScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reminderProvider = reminderControllerProvider(_reminderId);
+    final reminderProvider = reminderNotifierProvider(_reminderId);
     //We create the reminder state, that will default to an empty provider
     final _reminder = ref.watch(reminderProvider);
     return _reminder.when(
