@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:remindersapp/features/reminders/lower_bar.dart';
+import 'package:remindersapp/features/_shared/lower_bar.dart';
 import 'package:remindersapp/features/reminders/reminders_calendar.dart';
 import 'package:remindersapp/features/reminders/reminders_grid.dart';
 import 'package:remindersapp/routes.dart';
