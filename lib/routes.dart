@@ -1,9 +1,9 @@
-import 'package:remindersapp/features/reminders/reminders.dart';
+import 'package:remindersapp/features/reminders/reminders_screen.dart';
 import 'package:remindersapp/services/auth_service.dart';
-import 'package:remindersapp/features/not_found/not-found.dart';
-import 'package:remindersapp/features/profile/profile.dart';
-import 'package:remindersapp/features/reminder/reminder.dart';
-import 'package:remindersapp/features/sign_in/sign_in.dart';
+import 'package:remindersapp/features/not_found/not_found_screen.dart';
+import 'package:remindersapp/features/profile/profile_screen.dart';
+import 'package:remindersapp/features/reminder/reminder_screen.dart';
+import 'package:remindersapp/features/sign_in/sign_in_screen.dart';
 import 'package:vrouter/vrouter.dart';
 
 final routes = [

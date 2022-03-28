@@ -16,13 +16,11 @@ abstract class Reminder with _$Reminder {
   factory Reminder.empty(String user) =>
       Reminder(description: '', datetime: DateTime.now(), user: user);
 
-  factory Reminder.fromJson(json) {
-    json["datetime"] = ((json["datetime"] as Timestamp).toDate().toString());
-    return _$ReminderFromJson(json);
-  }
+  factory Reminder.fromJson(json) => _$ReminderFromJson(json);
 
   factory Reminder.fromDocument(DocumentSnapshot doc) {
-    final data = doc.data()!;
+    dynamic data = doc.data()!;
+    data["datetime"] = ((data["datetime"] as Timestamp).toDate().toString());
     return Reminder.fromJson(data).copyWith(id: doc.id);
   }
 

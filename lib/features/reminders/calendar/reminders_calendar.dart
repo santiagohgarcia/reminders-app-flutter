@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:remindersapp/features/reminders/reminders_controller.dart';
+import 'package:remindersapp/features/reminders/reminders_screen.controller.dart';
 import 'package:remindersapp/features/_shared/error.dart';
 import 'package:remindersapp/features/_shared/progress_indicator.dart';
+import 'package:remindersapp/model/model.dart';
 import 'package:remindersapp/theme.dart';
-import '../../model/model.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class RemindersCalendar extends ConsumerWidget {
@@ -12,7 +12,7 @@ class RemindersCalendar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reminders = ref.watch(remindersProvider);
+    final reminders = ref.watch(remindersScreenStateNotifierProvider).reminders;
 
       return reminders.when(
           data: (reminders) {

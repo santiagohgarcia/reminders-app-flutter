@@ -2,7 +2,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:remindersapp/features/reminder/reminder_controller.dart';
+import 'package:remindersapp/features/reminder/reminder_screen.controller.dart';
 import 'package:remindersapp/features/_shared/error.dart';
 import 'package:remindersapp/features/_shared/progress_indicator.dart';
 import 'package:remindersapp/routes.dart';
@@ -12,23 +12,20 @@ import '../../generated/l10n.dart';
 class ReminderScreen extends ConsumerWidget {
   ReminderScreen(this._reminderId, {Key? key}) : super(key: key);
 
-  get isCreation => _reminderId == null;
-  get isUpdate => _reminderId != null;
-
   final String? _reminderId;
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reminderProvider = reminderNotifierProvider(_reminderId);
-    final _reminder = ref.watch(reminderProvider);
-    return _reminder.when(
+    final reminderProvider = reminderStateNotifierProvider(_reminderId);
+    final reminderState = ref.watch(reminderProvider);
+    return reminderState.reminder.when(
       data: (reminder) => Scaffold(
           appBar: AppBar(
             title: Text(reminder.description),
             actions: [
-              isUpdate
+              !reminderState.isCreation
                   ? IconButton(
                       onPressed: () async {
                         await ref.read(reminderProvider.notifier).delete();
