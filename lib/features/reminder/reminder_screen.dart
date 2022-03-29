@@ -18,8 +18,8 @@ class ReminderScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reminderProvider = reminderStateNotifierProvider(_reminderId);
-    final reminderState = ref.watch(reminderProvider);
+    final reminderScreenStateProvider = reminderScreenStateNotifierProvider(_reminderId);
+    final reminderState = ref.watch(reminderScreenStateProvider);
     return reminderState.reminder.when(
       data: (reminder) => Scaffold(
           appBar: AppBar(
@@ -28,7 +28,7 @@ class ReminderScreen extends ConsumerWidget {
               !reminderState.isCreation
                   ? IconButton(
                       onPressed: () async {
-                        await ref.read(reminderProvider.notifier).delete();
+                        await ref.read(reminderScreenStateProvider.notifier).delete();
                         context.vRouter.to(RemindersRoute.path);
                         _showSnackBar(context, S.of(context).reminderDeleted);
                       },
@@ -51,7 +51,7 @@ class ReminderScreen extends ConsumerWidget {
                         ? S.of(context).mandatoryField
                         : null,
                     onChanged: (v) {
-                      ref.read(reminderProvider.notifier).setDescription(v);
+                      ref.read(reminderScreenStateProvider.notifier).setDescription(v);
                     }),
                 //Date
                 DateTimePicker(
@@ -64,7 +64,7 @@ class ReminderScreen extends ConsumerWidget {
                         : null,
                     onChanged: (v) {
                       ref
-                          .read(reminderProvider.notifier)
+                          .read(reminderScreenStateProvider.notifier)
                           .setDatetime(DateTime.parse(v));
                     })
               ]),
@@ -73,7 +73,7 @@ class ReminderScreen extends ConsumerWidget {
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                await ref.read(reminderProvider.notifier).save();
+                await ref.read(reminderScreenStateProvider.notifier).save();
                 context.vRouter.to(RemindersRoute.path);
                 _showSnackBar(context, S.of(context).reminderUpdated);
               }

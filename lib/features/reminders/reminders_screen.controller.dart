@@ -6,7 +6,7 @@ import 'package:remindersapp/services/reminder_service.dart';
 /*
   DATA PROVIDERS
 */
-final remindersProvider = StreamProvider.autoDispose<List<Reminder>>(
+final remindersDataProvider = StreamProvider.autoDispose<List<Reminder>>(
     (ref) => ReminderService().getReminders());
 
 /*
@@ -14,7 +14,7 @@ final remindersProvider = StreamProvider.autoDispose<List<Reminder>>(
 */
 final remindersScreenStateNotifierProvider = StateNotifierProvider.autoDispose<
     RemindersStateNotifier, RemindersScreenState>((ref) {
-  final reminders = ref.watch(remindersProvider);
+  final reminders = ref.watch(remindersDataProvider);
   return RemindersStateNotifier(
       RemindersScreenState(reminders: reminders, selectedTabIndex: 0));
 });

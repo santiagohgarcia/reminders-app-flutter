@@ -1,22 +1,37 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:remindersapp/features/reminder/reminder_screen.state.dart';
-import 'package:remindersapp/general_providers.dart';
 import 'package:remindersapp/model/model.dart';
 import 'package:remindersapp/services/reminder_service.dart';
+
+/* 
+DATA PROVIDERS
+*/
+
+final reminderDataProvider =
+    FutureProvider.family<Reminder, String>((ref, reminderId) {
+  return ReminderService().getReminder(reminderId).first;
+});
 
 /*
   STATE NOTIFIER PROVIDER
 */
-final reminderStateNotifierProvider = StateNotifierProvider.autoDispose
+final reminderScreenStateNotifierProvider = StateNotifierProvider.autoDispose
     .family<ReminderScreenStateNotifier, ReminderScreenState, String?>(
         (ref, reminderId) {
-  //If the reminder ID is not null, load the reminder and set it to state
+  //UPDATE //If the reminder ID is not null, set the reminder from the data provider
   if (reminderId != null) {
-    return ReminderScreenStateNotifier.fromReminderId(reminderId);
+    return ReminderScreenStateNotifier(
+      ReminderScreenState(
+        reminder: ref.watch(reminderDataProvider(reminderId)),
+        isCreation: false,
+      ),
+    );
   } else {
-    //If the reminder ID is null, get state it from a new reminder
-    final user = ref.watch(userProvider);
-    return ReminderScreenStateNotifier.fromEmptyReminder(user.value!.uid);
+    //CREATION //If the reminder ID is null, get state it from a new reminder
+    return ReminderScreenStateNotifier(ReminderScreenState(
+      reminder: AsyncData(Reminder.empty()),
+      isCreation: true,
+    ));
   }
 });
 
@@ -25,32 +40,6 @@ final reminderStateNotifierProvider = StateNotifierProvider.autoDispose
 */
 class ReminderScreenStateNotifier extends StateNotifier<ReminderScreenState> {
   ReminderScreenStateNotifier(ReminderScreenState state) : super(state);
-
-  static ReminderScreenStateNotifier fromEmptyReminder(String userId) {
-    final emptyState = ReminderScreenState(
-        reminder: AsyncData(Reminder.empty(userId)), isCreation: true);
-    return ReminderScreenStateNotifier(emptyState);
-  }
-
-  static ReminderScreenStateNotifier fromReminderId(String reminderId) {
-    final reminderScreenStateNotifier =
-        ReminderScreenStateNotifier(const ReminderScreenState(
-      reminder: AsyncLoading(),
-      isCreation: false
-    ));
-    reminderScreenStateNotifier.loadReminderById(reminderId);
-    return reminderScreenStateNotifier;
-  }
-
-  Future<void> loadReminderById(String reminderId) {
-    state = state.copyWith(reminder: const AsyncLoading());
-    return ReminderService().getReminder(reminderId).first.then((reminder) {
-      state = state.copyWith(reminder: AsyncData(reminder));
-      return reminder;
-    }).catchError((e, s) {
-      state = state.copyWith(reminder: AsyncError(e, stackTrace: s));
-    });
-  }
 
   void setDescription(String description) {
     final reminder = state.reminder.value!;

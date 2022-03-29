@@ -12,7 +12,7 @@ class RemindersCalendar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reminders = ref.watch(remindersScreenStateNotifierProvider).reminders;
+    final reminders = ref.watch(remindersScreenStateNotifierProvider.select((state) => state.reminders ));
 
       return reminders.when(
           data: (reminders) {

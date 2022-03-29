@@ -14,46 +14,46 @@ class RemindersScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final remindersState = ref.watch(remindersScreenStateNotifierProvider);
+    final selectedTabIndex = ref.watch(remindersScreenStateNotifierProvider
+        .select((state) => state.selectedTabIndex));
 
-    return DefaultTabController(
-      initialIndex: 0,
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(S.of(context).remindersApp),
-          automaticallyImplyLeading: false,
-          actions: [
-            IconButton(
-              icon: const Icon(FontAwesomeIcons.user),
-              tooltip: S.of(context).profile,
-              onPressed: () => context.vRouter.to('/profile'),
-            ),
-          ],
-        ),
-        body: [
-          const RemindersGrid(),
-          const RemindersCalendar()
-        ][remindersState.selectedTabIndex],
-        bottomNavigationBar: BottomNavigationBar(
-            selectedItemColor: appTheme.primaryColor,
-            currentIndex: remindersState.selectedTabIndex,
-            onTap: (index) {
-              ref
-                  .watch(remindersScreenStateNotifierProvider.notifier)
-                  .setSelectedTabIndex(index);
-            },
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.list), label: 'List'),
-              BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.calendar), label: 'Calendar'),
-            ]),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => context.vRouter.to(NewReminderRoute.path),
-          label: Text(S.of(context).newItem),
-          icon: const Icon(Icons.add),
-        ),
+    return Scaffold(
+      /*APP BAR */
+      appBar: AppBar(
+        title: Text(S.of(context).remindersApp),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(FontAwesomeIcons.user),
+            tooltip: S.of(context).profile,
+            onPressed: () => context.vRouter.to('/profile'),
+          ),
+        ],
+      ),
+      /* BODY */
+      body: [
+        const RemindersGrid(),
+        const RemindersCalendar()
+      ][selectedTabIndex],
+      /* BOTTOM NAVIGATION BAR */
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: appTheme.primaryColor,
+        currentIndex: selectedTabIndex,
+        onTap: (index) => ref
+            .watch(remindersScreenStateNotifierProvider.notifier)
+            .setSelectedTabIndex(index),
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.list), label: 'List'),
+          BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.calendar), label: 'Calendar'),
+        ],
+      ),
+      /*FLOATING ACTION BUTTON */
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.vRouter.to(NewReminderRoute.path),
+        label: Text(S.of(context).newItem),
+        icon: const Icon(Icons.add),
       ),
     );
   }

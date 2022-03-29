@@ -13,8 +13,8 @@ abstract class Reminder with _$Reminder {
       required DateTime datetime,
       required String user}) = _Reminder;
 
-  factory Reminder.empty(String user) =>
-      Reminder(description: '', datetime: DateTime.now(), user: user);
+  factory Reminder.empty() =>
+      Reminder(description: '', datetime: DateTime.now(), user: '');
 
   factory Reminder.fromJson(json) => _$ReminderFromJson(json);
 
