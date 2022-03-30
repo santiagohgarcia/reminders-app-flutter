@@ -13,23 +13,21 @@ class RemindersGrid extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reminders = ref.watch(remindersScreenStateNotifierProvider.select((state) => state.reminders ));
+    final reminders = ref.watch(remindersScreenStateNotifierProvider
+        .select((state) => state.reminders));
 
     return reminders.when(
         data: (reminders) => LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-              return Stack(children: [
-                lowerBar,
-                GridView.count(
-                  crossAxisCount: constraints.maxWidth ~/ 250,
-                  childAspectRatio: 3 / 1,
-                  padding: const EdgeInsets.all(10),
-                  children: List.generate(
-                    reminders.length,
-                    (index) => _reminderCard(context, reminders[index]),
-                  ),
-                )
-              ]);
+              return GridView.count(
+                crossAxisCount: constraints.maxWidth ~/ 250,
+                childAspectRatio: 3 / 1,
+                padding: const EdgeInsets.all(10),
+                children: List.generate(
+                  reminders.length,
+                  (index) => _reminderCard(context, reminders[index]),
+                ),
+              );
             }),
         error: (e, s) => ErrorScreen(e, s),
         loading: () => const ProgressIndicatorScreen());

@@ -4,7 +4,6 @@ import 'package:remindersapp/features/reminders/reminders_screen.controller.dart
 import 'package:remindersapp/features/_shared/error.dart';
 import 'package:remindersapp/features/_shared/progress_indicator.dart';
 import 'package:remindersapp/model/model.dart';
-import 'package:remindersapp/theme.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class RemindersCalendar extends ConsumerWidget {
@@ -13,7 +12,6 @@ class RemindersCalendar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final reminders = ref.watch(remindersScreenStateNotifierProvider.select((state) => state.reminders ));
-
       return reminders.when(
           data: (reminders) {
             return SfCalendar(
@@ -57,10 +55,5 @@ class RemindersDataSource extends CalendarDataSource<List<Reminder>> {
   @override
   String getSubject(int index) {
     return appointments![index].description;
-  }
-
-  @override
-  Color getColor(int index) {
-    return appTheme.secondaryHeaderColor;
   }
 }

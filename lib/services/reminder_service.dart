@@ -13,7 +13,7 @@ class ReminderService {
         .where('user', isEqualTo: user.uid)
         .snapshots()
         .map((snapshot) => snapshot.docs)
-        .map((docs) => docs.map((doc) => Reminder.fromDocument(doc)))
+        .map((docs) => docs.map(Reminder.fromDocument))
         .map((reminders) => reminders.toList());
   }
 
@@ -23,7 +23,7 @@ class ReminderService {
         .collection('reminders')
         .doc(id)
         .snapshots()
-        .map((snap) => Reminder.fromDocument(snap));
+        .map(Reminder.fromDocument);
   }
 
   /// Updates a Reminder

@@ -37,7 +37,8 @@ class RemindersScreen extends ConsumerWidget {
       ][selectedTabIndex],
       /* BOTTOM NAVIGATION BAR */
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: appTheme.primaryColor,
+        //selectedItemColor: appTheme.primaryColorDark,
+        //backgroundColor: appTheme.primaryColorDark,
         currentIndex: selectedTabIndex,
         onTap: (index) => ref
             .watch(remindersScreenStateNotifierProvider.notifier)
