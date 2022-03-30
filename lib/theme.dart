@@ -35,6 +35,11 @@ const lightColorScheme = ColorScheme(
 	shadow : Color(0xFF000000),
 );
 
+var appLightTheme = ThemeData(
+  brightness: Brightness.light,
+  colorScheme: lightColorScheme
+);
+
 const darkColorScheme = ColorScheme(
 	brightness: Brightness.dark,
 	primary : Color(0xFFB4C4FF),
@@ -66,6 +71,7 @@ const darkColorScheme = ColorScheme(
 	shadow : Color(0xFF000000),
 );
 
-var appTheme = ThemeData(
+var appDarkTheme = ThemeData(
+  brightness: Brightness.dark,
   colorScheme: darkColorScheme
 );

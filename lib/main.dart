@@ -41,7 +41,8 @@ class App extends ConsumerWidget {
       supportedLocales: S.delegate.supportedLocales,
       initialUrl: '/reminders',
       routes: routes,
-      theme: appTheme,
+      theme: appLightTheme,
+      darkTheme: appDarkTheme
     );
   }
 }

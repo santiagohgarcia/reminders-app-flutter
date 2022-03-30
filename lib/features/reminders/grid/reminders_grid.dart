@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:remindersapp/features/_shared/lower_bar.dart';
 import 'package:remindersapp/features/reminders/reminders_screen.controller.dart';
 import 'package:remindersapp/features/_shared/error.dart';
 import 'package:remindersapp/features/_shared/progress_indicator.dart';
