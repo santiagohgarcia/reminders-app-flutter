@@ -11,32 +11,37 @@ class RemindersCalendar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reminders = ref.watch(remindersScreenStateNotifierProvider.select((state) => state.reminders ));
-      return reminders.when(
-          data: (reminders) {
-            return SfCalendar(
-              view: CalendarView.month,
-              dataSource: RemindersDataSource(reminders),
-              allowedViews: const [
-                CalendarView.day,
-                CalendarView.week,
-                CalendarView.workWeek,
-                CalendarView.month,
-                CalendarView.schedule
-              ],
-              showNavigationArrow: true,
-              monthViewSettings: const MonthViewSettings(
-                  appointmentDisplayMode:
-                      MonthAppointmentDisplayMode.appointment),
-            );
-          },
-          error: (e, s) => ErrorScreen(e, s),
-          loading: () => const ProgressIndicatorScreen());
+    final reminders = ref.watch(remindersScreenStateNotifierProvider
+        .select((state) => state.reminders));
+    return reminders.when(
+        data: (reminders) {
+          return SfCalendar(
+            view: CalendarView.month,
+            dataSource: RemindersDataSource(reminders, context),
+            allowedViews: const [
+              CalendarView.day,
+              CalendarView.week,
+              CalendarView.workWeek,
+              CalendarView.month,
+              CalendarView.schedule
+            ],
+            appointmentTextStyle: TextStyle(
+                color: Theme.of(context).colorScheme.onTertiaryContainer, fontSize: 10, fontWeight: FontWeight.w500, fontFamily: 'Roboto'),
+            showNavigationArrow: true,
+            monthViewSettings: const MonthViewSettings(
+                appointmentDisplayMode:
+                    MonthAppointmentDisplayMode.appointment),
+          );
+        },
+        error: (e, s) => ErrorScreen(e, s),
+        loading: () => const ProgressIndicatorScreen());
   }
 }
 
 class RemindersDataSource extends CalendarDataSource<List<Reminder>> {
-  RemindersDataSource(List<Reminder> reminders) {
+  final BuildContext context;
+
+  RemindersDataSource(List<Reminder> reminders, this.context) {
     appointments = reminders;
   }
 
@@ -55,5 +60,10 @@ class RemindersDataSource extends CalendarDataSource<List<Reminder>> {
   @override
   String getSubject(int index) {
     return appointments![index].description;
+  }
+
+  @override
+  Color getColor(int index) {
+    return Theme.of(context).colorScheme.tertiaryContainer;
   }
 }

@@ -20,6 +20,7 @@ class ReminderScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final reminderScreenStateProvider = reminderScreenStateNotifierProvider(_reminderId);
     final reminderState = ref.watch(reminderScreenStateProvider);
+    
     return reminderState.reminder.when(
       data: (reminder) => Scaffold(
           appBar: AppBar(

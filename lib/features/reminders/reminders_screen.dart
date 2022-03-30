@@ -30,23 +30,22 @@ class RemindersScreen extends ConsumerWidget {
           ),
         ],
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       /* BODY */
       body: [
         const RemindersGrid(),
         const RemindersCalendar()
       ][selectedTabIndex],
       /* BOTTOM NAVIGATION BAR */
-      bottomNavigationBar: BottomNavigationBar(
-        //selectedItemColor: appTheme.primaryColorDark,
-        //backgroundColor: appTheme.primaryColorDark,
-        currentIndex: selectedTabIndex,
-        onTap: (index) => ref
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: selectedTabIndex,
+        onDestinationSelected: (index) => ref
             .watch(remindersScreenStateNotifierProvider.notifier)
             .setSelectedTabIndex(index),
-        items: const [
-          BottomNavigationBarItem(
+        destinations: const [
+          NavigationDestination(
               icon: Icon(FontAwesomeIcons.list), label: 'List'),
-          BottomNavigationBarItem(
+          NavigationDestination(
               icon: Icon(FontAwesomeIcons.calendar), label: 'Calendar'),
         ],
       ),
